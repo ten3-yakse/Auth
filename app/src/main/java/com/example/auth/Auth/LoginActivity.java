@@ -1,6 +1,7 @@
 package com.example.auth.Auth;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -16,7 +17,9 @@ import com.example.auth.Api.ApiClient;
 import com.example.auth.Api.model.LoginRequest;
 import com.example.auth.Api.model.LoginResponses;
 import com.example.auth.MainActivity;
+import com.example.auth.MovieActivity;
 import com.example.auth.R;
+import com.example.auth.Token;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +29,9 @@ public class LoginActivity extends AppCompatActivity {
     TextView textView;
     Button btn_login;
     EditText et_mail, et_pass;
+    SharedPreferences sPref;
 
+    final String SAVED_TEXT = "saved_text";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,10 +82,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponses> call, Response<LoginResponses> response) {
                 if (response.isSuccessful()){
+                    LoginResponses loginResponses = response.body();
 
-                    Toast.makeText(LoginActivity.this, "Successful",Toast.LENGTH_LONG).show();
+                    sPref = getSharedPreferences("MyPref", MODE_PRIVATE);
+                    SharedPreferences.Editor ed = sPref.edit();
+                    String message = Integer.toString(loginResponses.getToken());
+                    ed.putString(SAVED_TEXT, message);
+                    ed.commit();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
+
                     finish();
                 }else{
                     Toast.makeText(LoginActivity.this, "Error" ,Toast.LENGTH_LONG).show();

@@ -6,6 +6,7 @@ import com.example.auth.Api.services.InTrendService;
 import com.example.auth.Api.services.LoginService;
 import com.example.auth.Api.services.NewService;
 import com.example.auth.Api.services.RegisterService;
+import com.example.auth.Api.services.UserMovies;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -57,5 +58,9 @@ public class ApiClient {
     public static CoverService getMovieCover(){
         CoverService coverService = getRetrofit().create(CoverService.class);
         return  coverService;
+    }
+    public static UserMovies getUserMovies(){
+        UserMovies userMovies = getRetrofit().create(UserMovies.class);
+        return userMovies;
     }
 }
